@@ -1,0 +1,160 @@
+﻿@model IPagedList<Product>
+ 
+@{
+    ViewData["Title"] = "Shop";
+}
+
+<!--shop  area start-->
+<div class="shop_section shop_reverse">
+    <div class="container">
+        <div class="row mt-5">
+           
+            <div class="col-lg-9 col-md-12 mx-auto" >
+                <!--shop wrapper start-->
+                <!--breadcrumbs area start-->
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/">home</a></li>
+                        <li>shop</li>
+                    </ul>
+                </div>
+                <!--breadcrumbs area end-->
+
+               
+                <!--shop toolbar start-->
+                <div class="shop_toolbar_wrapper d-flex justify-content-between align-items-center">
+                    <div class="page_amount">
+                        <p><span>@Model.Count</span> Products Found</p>
+                    </div>
+                    <div class="toolbar_btn_wrapper d-flex align-items-center">
+                        <div class="view_btn">
+                            <a class="view" href="#">VIEW</a>
+                        </div>
+                        <div class="shop_toolbar_btn">
+                            <ul class="d-flex align-items-center">
+                                <li><a href="#" class="active btn-grid-3" data-role="grid_3" data-tippy="3" data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-placement="top"><i class="ion-grid"></i></a></li>
+
+                                <li><a href="#" class="btn-list" data-role="grid_list" data-tippy="List" data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-placement="top"><i class="ion-navicon"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--shop toolbar end-->
+                <div class="row shop_wrapper">
+
+                    @foreach(var item in Model)
+                    {
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-6 ">
+                        <div class="single_product">
+                            <div class="product_thumb">
+                                    <a href="/products/productDetails/@item.Id">
+                                    <img class="primary_img" src="~/images/products/@item.ImageName" alt="consectetur">
+                                </a>
+                                @if(item.Discount!=null && item.Price>0)
+                                {
+									decimal? discount = item.Discount.GetValueOrDefault(0)/item.Price.GetValueOrDefault(0)*100;
+                                    
+                                    <div class="product_label">
+                                        <span>-@discount.GetValueOrDefault(0).ToString("F1")%</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="product_content grid_content text-center">
+                               
+                                 <h4 class="product_name"><a href="/products/productDetails/@item.Id">@item.Titel</a></h4>
+                                <div class="price_box">
+										@if (item.Discount != null)
+                                        {
+											decimal? discount = item.Price.GetValueOrDefault(0) - item.Discount.GetValueOrDefault(0);
+
+                                            <span class="current_price">$@discount.GetValueOrDefault(0).ToString("F")</span>
+                                            <span class="old_price">$@item.Price.GetValueOrDefault(0).ToString("F")</span>
+										}
+										else
+										{
+											<span class="current_price">$@item.Price.GetValueOrDefault(0).ToString("F")</span>
+										}
+                                  
+                                </div>
+                                <div class="add_to_cart">
+                                    <a class="btn btn-primary" href="#" data-tippy="Add To Cart" data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-placement="top">Add To Cart</a>
+                                </div>
+                            </div>
+                            <div class="product_list_content">
+                                    <h4 class="product_name"><a href="product-details.html">@item.Titel</a></h4>
+                                <p><a href="#">shows</a></p>
+                                <div class="price_box">
+                                        @if (item.Discount != null)
+                                        {
+                                            decimal? discount = item.Price.GetValueOrDefault(0) - item.Discount.GetValueOrDefault(0);
+
+                                            <span class="current_price">$@discount.GetValueOrDefault(0).ToString("F")</span>
+                                            <span class="old_price">$@item.Price.GetValueOrDefault(0).ToString("F")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="current_price">$@item.Price.GetValueOrDefault(0).ToString("F")</span>
+                                        }
+                                </div>
+                                <div class="product_desc">
+                                    <p>@item.Description</p>
+                                </div>
+                                <div class="add_to_cart">
+                                    <a class="btn btn-primary" href="#" data-tippy="Add To Cart" data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-placement="top">Add To Cart</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+                  
+                </div>
+
+
+               @if (Model != null && Model.PageCount > 1)
+               {
+                    <div class="pagination_style pagination justify-content-center">
+                        <ul class="d-flex">
+                            <!-- زر الصفحة السابقة -->
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li><a href="@Url.Action("Index", "Products", new { page = Model.PageNumber - 1 })"> &lt;&lt; </a></li>
+                            }
+
+                            <!-- أرقام الصفحات -->
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                if (i == Model.PageNumber)
+                                {
+                                    <li><a class="current" href="#">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("Index", "Products", new { page = i })">@i</a></li>
+                                }
+                            }
+
+                            <!-- زر الصفحة التالية -->
+                            @if (Model.HasNextPage)
+                            {
+                                <li><a href="@Url.Action("Index", "Products", new { page = Model.PageNumber + 1 })">  &gt;&gt; </a></li>
+                            }
+                        </ul>
+                    </div>
+
+                    <!-- عرض رقم الصفحة الحالي من إجمالي الصفحات -->
+                    <div class="text-center mt-2">
+                        <span>@Model.PageNumber of @Model.PageCount</span>
+                    </div>
+                }
+
+                
+
+                <!--shop toolbar end-->
+                <!--shop wrapper end-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--shop  area end-->
