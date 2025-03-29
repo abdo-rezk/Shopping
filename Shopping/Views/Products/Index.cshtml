@@ -49,7 +49,7 @@
                             <div class="product_thumb">
                                     <a href="/products/productDetails/@item.Id">
                                     <img class="primary_img" src="~/images/products/@item.ImageName" alt="consectetur">
-                                </a>
+                                    </a>
                                 @if(item.Discount!=null && item.Price>0)
                                 {
 									decimal? discount = item.Discount.GetValueOrDefault(0)/item.Price.GetValueOrDefault(0)*100;
