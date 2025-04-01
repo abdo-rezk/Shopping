@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Shopping.Models.Db;
 
@@ -13,6 +14,12 @@ namespace Shopping
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<OnlineShopContext>(option => 
             option.UseSqlServer(builder.Configuration.GetConnectionString("constr")));
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option =>
+                {
+                    option.LoginPath = "/Account/Login";
+                    option.LogoutPath = "/Account/Logout";
+                });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,7 +30,9 @@ namespace Shopping
             app.UseStaticFiles();
 
             app.UseRouting();
-
+           
+            //must be before UseAuthorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
