@@ -86,7 +86,7 @@ namespace Shopping.Controllers
             claims.Add(new Claim(ClaimTypes.Email, GetUser.Email));
             if (GetUser.IsAdmin == true)
             {
-                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                claims.Add(new Claim(ClaimTypes.Role, "admin"));
             }
             else
             {
