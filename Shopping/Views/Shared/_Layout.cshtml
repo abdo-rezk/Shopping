@@ -99,14 +99,7 @@
     <!--offcanvas menu area end-->
     <!--mini cart-->
     <div class="mini_cart">
-        <div class="cart_close">
-            <div class="cart_text">
-                <h3>cart</h3>
-            </div>
-            <div class="mini_cart_close">
-                <a href="javascript:void(0)"><i class="icon-close icons"></i></a>
-            </div>
-        </div>
+        
 
     </div>
     <!--mini cart end-->
@@ -355,6 +348,7 @@
                 success: function (result) {
                     $(".item_count").html(result);
                     if(count==0){
+						//to remove the product by id from the main page of cart
 						$("#"+productId).remove();
                     }
                     getMiniCart();
